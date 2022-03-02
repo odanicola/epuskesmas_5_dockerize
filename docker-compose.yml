@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  epuskesmas_5:
+    build:
+      context: ./epuskesmas_5
+      dockerfile: ./Dockerfile
+    image: epuskesmas_5
+    container_name: epuskesmas_5
+    restart: unless-stopped
+    volumes:
+      - ./epuskesmas_5:/var/www/html
+    ports:
+      - "8001:8080"
+    networks:
+      - epus
+  mariadb:
+    image: mariadb:10.3.32
+    container_name: mariadb
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MARIADB_ROOT_USERNAME: root
+      MARIADB_ROOT_PASSWORD: 1234
+    networks:
+      - epus
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8002:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - epus
+networks:
+  epus:
+    driver: bridge
