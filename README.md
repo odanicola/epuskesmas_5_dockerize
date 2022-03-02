@@ -45,6 +45,11 @@ Untuk menjalankan kembali container, jalankan perintah berikut:
 docker-compose start
 ```
 
+Composer install
+```bash
+docker-compose exec epuskesmas_5 composer install
+```
+
 Untuk akses aplikasi, http://localhost:8001
 Untuk akses phpmyadmin, http://localhost:8002
 
