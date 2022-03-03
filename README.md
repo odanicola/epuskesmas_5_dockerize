@@ -27,6 +27,8 @@ Jalankan perintah:
 docker-compose up
 ```
 
+Untuk menggunakan centos 7, silahkan ubah dockerfile pada docker-compose menjadi Dockerfile.centos
+
 Periksa apakah service-service telah jalan:
 
 ```bash
