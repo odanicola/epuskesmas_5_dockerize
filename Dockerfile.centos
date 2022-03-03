@@ -16,7 +16,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 
 # Install PHP
 RUN yum --enablerepo=remi-php73 -y install php php-fpm php-bcmath php-cli php-common php-gd php-intl php-ldap php-mbstring \
-    php-mysqlnd php-pear php-soap php-xml php-xmlrpc php-zip php-zmq
+    php-curl php-json php-xml php-xdebug php-mysqlnd php-pear php-soap php-xml php-xmlrpc php-zip php-zmq
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.16 

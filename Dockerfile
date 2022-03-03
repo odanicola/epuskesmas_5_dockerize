@@ -22,7 +22,7 @@ COPY ./.env /var/www/html/.env
 
 # create log file for initial stream
 # RUN touch /var/www/html/storage/logs/lumen.log
-RUN chown -R www-data:www-data /var/www/html/storage/logs
+# RUN chown -R www-data:www-data /var/www/html/storage/logs
 
 # Set up locales 
 # RUN locale-gen 
@@ -43,7 +43,8 @@ RUN apt-get install -y \
     php7.3-xml \
     php7.3-bcmath \
     php7.3-zip \
-    php7.3-zmq
+    php7.3-zmq \
+    php7.3-xdebug
 
 # Install NPM and Node.js
 # RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
