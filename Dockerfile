@@ -22,7 +22,7 @@ COPY ./.env /var/www/html/.env
 
 # create log file for initial stream
 # RUN touch /var/www/html/storage/logs/lumen.log
-# RUN chown -R www-data:www-data /var/www/html/storage/logs
+RUN chown -R www-data:www-data /var/www/html/storage/logs
 
 # Set up locales 
 # RUN locale-gen 

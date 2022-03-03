@@ -1,0 +1,56 @@
+#------------- Setup Environment -------------------------------------------------------------
+
+# Pull base image
+FROM centos:7
+
+# Install update
+RUN yum -y update
+RUN yum -y install epel-release
+RUN yum -y install nginx
+RUN yum -y install supervisor
+RUN yum -y install vim-enhanced
+
+# Install EPEL Repo
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+# Install PHP
+RUN yum --enablerepo=remi-php73 -y install php php-fpm php-bcmath php-cli php-common php-gd php-intl php-ldap php-mbstring \
+    php-mysqlnd php-pear php-soap php-xml php-xmlrpc php-zip php-zmq
+
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.16 
+# RUN composer install
+
+
+# Set evn var to enable xterm terminal
+ENV TERM=xterm
+
+# Set timezone to UTC to avoid tzdata interactive mode during build
+ENV TZ=Etc/UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Set working directory
+WORKDIR /usr/share/nginx/html
+
+# Set project to image
+ADD . /usr/share/nginx/html
+COPY ./.env /usr/share/nginx/html/.env
+
+RUN chown -R apache:apache /usr/share/nginx/html/storage/logs/laravel.log
+RUN chown -R apache:apache /usr/share/nginx/html/storage/framework/views
+
+# Config fpm to use TCP instead of unix socket
+RUN mkdir -p /var/run/php-fpm
+
+ADD resources/default_centos /etc/nginx/sites-enabled/
+ADD resources/nginx.conf /etc/nginx/
+
+RUN mkdir -p /var/log/supervisor
+ADD resources/supervisord_centos.conf /etc/supervisor/supervisord.conf
+
+# Expose port 8080
+EXPOSE 8080
+
+# Set supervisor to manage container processes
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
