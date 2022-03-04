@@ -46,6 +46,8 @@ RUN mkdir -p /var/run/php-fpm
 ADD resources/default_centos /etc/nginx/sites-enabled/
 ADD resources/nginx.conf /etc/nginx/
 
+ADD resources/php.ini /etc/php.ini
+
 RUN mkdir -p /var/log/supervisor
 ADD resources/supervisord_centos.conf /etc/supervisor/supervisord.conf
 
